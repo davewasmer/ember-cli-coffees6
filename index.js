@@ -1,7 +1,7 @@
 'use strict';
 
 var Filter = require('broccoli-filter')
-
+var checker = require('ember-cli-version-checker');
 
 CoffeeScriptEs6Filter.prototype = Object.create(Filter.prototype);
 CoffeeScriptEs6Filter.prototype.constructor = CoffeeScriptEs6Filter
@@ -56,10 +56,20 @@ function CoffeescriptES6Addon(project) {
   this.name     = 'Ember CLI Coffeescript ES6 Addon';
 }
 
+CoffeescriptES6Addon.prototype.shouldSetupRegistryInIncluded = function() {
+  return !checker.isAbove(this, '0.2.0');
+}
+
+CoffeescriptES6Addon.prototype.setupPreprocessorRegistry = function(type, registry) {
+  var plugin = new CoffeeES6Preprocessor(this._project.config(process.env.EMBER_ENV).coffeeES6);
+  registry.add('js', plugin);
+}
+
 CoffeescriptES6Addon.prototype.included = function(app) {
   this.app = app;
-  var plugin = new CoffeeES6Preprocessor(this.app.options.coffeeES6);
-  this.app.registry.add('js', plugin);
+  if (this.shouldSetupRegistryInIncluded()) {
+    this.setupPreprocessorRegistry('parent', app.registry);
+  }
 };
 
 module.exports = CoffeescriptES6Addon;
