@@ -23,6 +23,7 @@
   "homepage": "https://github.com/alexspeller/ember-cli-coffees6",
   "dependencies": {
     "broccoli-filter": "^0.1.10",
+    "debug": "^2.1.1",
     "ember-cli": "~0.1.0",
     "ember-cli-coffeescript": ">=0.2.0",
     "ember-cli-version-checker": "^1.0.2"
